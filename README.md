@@ -52,4 +52,6 @@ Configure the `production` environment with these GitHub Actions secrets:
 | `APP_USERNAME` | Basic Auth username |
 | `APP_PASSWORD` | Basic Auth password |
 
-The Linux server must have Docker installed and port 80 open.
+The Linux server must have Docker and Nginx installed and port 80 open. The
+deployment binds the container to `127.0.0.1:3001`; Nginx proxies public port
+80 to that private listener.

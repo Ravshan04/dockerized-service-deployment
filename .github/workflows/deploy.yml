@@ -81,13 +81,14 @@ jobs:
           printf '%s' "$GHCR_TOKEN" | ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
             "sudo docker login ghcr.io -u '${{ github.actor }}' --password-stdin"
           ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
-            "sudo docker pull '$IMAGE' && sudo docker rm -f dockerized-service 2>/dev/null || true"
+            "sudo docker pull '$IMAGE'"
           ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
-            "sudo docker run -d --name dockerized-service --restart unless-stopped -p 80:3000 \
+            "sudo docker rm -f dockerized-service 2>/dev/null || true"
+          ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
+            "sudo docker run -d --name dockerized-service --restart unless-stopped -p 127.0.0.1:3001:3000 \
             -e SECRET_MESSAGE='$SECRET_MESSAGE' -e USERNAME='$APP_USERNAME' -e PASSWORD='$APP_PASSWORD' '$IMAGE'"
 
       - name: Verify deployment
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
         run: curl --fail --retry 10 --retry-delay 3 "http://${SERVER_HOST}/health"
-
