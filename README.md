@@ -4,6 +4,8 @@ Project page: [Dockerized Service](https://roadmap.sh/projects/dockerized-servic
 
 Solution repository: https://github.com/Ravshan04/dockerized-service-deployment
 
+Live service: http://54.194.155.56
+
 A Node.js service packaged as a Docker image and deployed to a remote Linux
 server by GitHub Actions. Images are stored in GitHub Container Registry and
 runtime secrets are supplied only through environment variables.
