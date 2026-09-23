@@ -1,0 +1,9 @@
+services:
+  app:
+    image: ghcr.io/ravshan04/dockerized-service-deployment:latest
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "80:3000"
+
