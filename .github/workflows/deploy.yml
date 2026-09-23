@@ -78,8 +78,8 @@ jobs:
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
-          printf '%s' "$GHCR_TOKEN" | ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
-            "sudo docker login ghcr.io -u '${{ github.actor }}' --password-stdin"
+          ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
+            "printf '%s' '$GHCR_TOKEN' | sudo timeout 30s docker login ghcr.io -u '${{ github.actor }}' --password-stdin"
           ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
             "sudo docker pull '$IMAGE'"
           ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/deploy_key "${SSH_USER}@${SERVER_HOST}" \
